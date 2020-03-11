@@ -9,7 +9,6 @@ add_compile_definitions(GLEW_STATIC)
 # Set the library directory
 link_directories(lib)
 set(OpenGLLibs glew32s glfw3 opengl32)
-target_link_libraries(GLFWClion ${OpenGLLibs})
 
 # Set the include header directory
 include_directories(include)
@@ -20,4 +19,5 @@ include_directories(include)
 
 add_executable(GLFWClion main.cpp)
 
+target_link_libraries(GLFWClion ${OpenGLLibs})
 
