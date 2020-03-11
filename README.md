@@ -27,7 +27,7 @@ set(OpenGLLibs glew32s glfw3 opengl32)
 target_link_libraries(GLFWClion ${OpenGLLibs})
 ```
 
-> The default for GLEW commands is to use the _dynamic library_ (*.dll), because this, an additional definition must be on **CMake** file:
+> The default for GLEW commands is to use the _dynamic library_ (*.dll), because this, an additional definition must be in **CMake** file:
 > ```cmake
 > # Define GLEW_STATIC because the DLL isn't being used
 > add_compile_definitions(GLEW_STATIC)
@@ -35,7 +35,7 @@ target_link_libraries(GLFWClion ${OpenGLLibs})
 
 ### Headers
 
-The library header must be in `/include` folder, they are:
+The library headers must be in `/include` folder, they are:
 - **GLEW/eglew.h**
 - **GLEW/glew.h**
 - **GLEW/glxew.h**
