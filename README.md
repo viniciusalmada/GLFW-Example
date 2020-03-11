@@ -47,3 +47,46 @@ The **CMake** command to add include folder is:
 ```cmake
 include_directories(include)
 ```
+
+### Running Workflow
+
+First of all, the `glfw` must be initialized.
+```c++
+glfwInit();
+```
+
+Then, a window object can be created:
+```c++
+GLFWwindow* windows = glfwCreateWindow(640, 480, "Window title",NULL,NULL);
+```
+
+Make the window's context current
+```c++
+glfwMakeContextCurrent(window);
+```
+
+Set the resize window callback
+```c++
+// Notice the use of lambda expression
+glfwSetWindowSizeCallback(window, [](GLFWwindow*, int w, int h){
+		glViewport(0, 0, w, h);
+		// Call the redisplay function;
+	});
+```
+
+Initialize the glew library
+> It must be initialized after exists a valid OpenGL context
+```c++
+GLenum err = glewInit();
+	if (err != GLEW_OK) {
+		fprintf(stderr, "GLEW Error: %s\n", glewGetErrorString(err));
+		exit(-1);
+	}
+```
+
+Set the canvas clear color
+```c++
+glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+```
+
+Create shader programs and compile

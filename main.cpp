@@ -17,8 +17,6 @@ void CompileShader(GLuint id);
 
 void LinkProgram(GLuint id);
 
-void Reshape(GLFWwindow *wind, int w, int h);
-
 void Error(const char *);
 
 GLuint program;
@@ -62,7 +60,11 @@ int main() {
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 
-	glfwSetWindowSizeCallback(window, Reshape);
+	glfwSetWindowSizeCallback(window, [](GLFWwindow*, int w, int h){
+		printf("%s", "Reshape()\n");
+		glViewport(0, 0, w, h);
+		Display();
+	});
 
 	Init();
 
@@ -83,10 +85,10 @@ static void LinkProgram(GLuint id) {
 	if (!status) {
 		GLint len;
 		glGetProgramiv(id, GL_INFO_LOG_LENGTH, &len);
-		char *message = (char *) malloc(len * sizeof(char));
-		glGetProgramInfoLog(id, len, 0, message);
+		char *message = new char();
+		glGetProgramInfoLog(id, len, nullptr, message);
 		Error(message);
-		free(message);
+		delete message;
 	}
 }
 
@@ -98,17 +100,11 @@ static void CompileShader(GLuint id) {
 	if (!status) {
 		GLint len;
 		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &len);
-		char *message = (char *) malloc(len * sizeof(char));
-		glGetShaderInfoLog(id, len, 0, message);
+		char *message = new char();
+		glGetShaderInfoLog(id, len, nullptr, message);
 		Error(message);
-		free(message);
+		delete message;
 	}
-}
-
-void Reshape(GLFWwindow *wind, int w, int h) {
-	printf("%s", "Reshape()\n");
-	glViewport(0, 0, w, h);
-	Display();
 }
 
 void Error(const char *message) {
@@ -157,13 +153,13 @@ void DrawScene() {
 
 void Display() {
 	printf("%s", "Display()\n");
-	bool first = true;
+	static bool first = true;
 	if (first) {
 		InitScene();
 		first = false;
 	}
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear((GLuint) GL_COLOR_BUFFER_BIT | (GLuint) GL_DEPTH_BUFFER_BIT);
 
 	DrawScene();
 
